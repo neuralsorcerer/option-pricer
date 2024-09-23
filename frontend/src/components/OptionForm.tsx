@@ -8,7 +8,7 @@ interface OptionInputs {
   sigma: number;
   optionType: "call" | "put";
   simulations: number;
-  dist: string;
+  dist: "normal" | "lognormal";
 }
 
 interface Props {
@@ -126,7 +126,12 @@ const OptionForm: React.FC<Props> = ({
         <label className="block text-gray-700">Distribution</label>
         <select
           value={inputs.dist}
-          onChange={(e) => setInputs({ ...inputs, dist: e.target.value })}
+          onChange={(e) =>
+            setInputs({
+              ...inputs,
+              dist: e.target.value as "normal" | "lognormal",
+            })
+          }
           className="p-2 border rounded-lg w-full"
         >
           <option value="normal">Normal</option>

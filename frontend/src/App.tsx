@@ -18,7 +18,7 @@ interface OptionInputs {
   sigma: number;
   optionType: "call" | "put";
   simulations: number;
-  dist: string;
+  dist: "normal" | "lognormal";
 }
 
 interface Greeks {
@@ -30,7 +30,7 @@ interface Greeks {
 }
 
 const App: React.FC = () => {
-  const [inputs, setInputs] = useState<OptionInputs>({
+  const initialInputs: OptionInputs = {
     S: 100,
     K: 100,
     T: 1,
@@ -39,8 +39,9 @@ const App: React.FC = () => {
     optionType: "call",
     simulations: 10000,
     dist: "normal",
-  });
+  };
 
+  const [inputs, setInputs] = useState<OptionInputs>(initialInputs);
   const [price, setPrice] = useState<number | null>(null);
   const [monteCarloPrice, setMonteCarloPrice] = useState<number | null>(null);
   const [greeks, setGreeks] = useState<Greeks | null>(null);
@@ -65,6 +66,14 @@ const App: React.FC = () => {
     } catch (error) {
       console.error("Error fetching Monte Carlo price:", error);
     }
+  };
+
+  const handleReset = () => {
+    setInputs(initialInputs);
+    setPrice(null);
+    setMonteCarloPrice(null);
+    setGreeks(null);
+    setHeatmapData(null);
   };
 
   const handleFetchHeatmapData = async () => {
@@ -99,6 +108,14 @@ const App: React.FC = () => {
           fetchMonteCarloPrice={handleFetchMonteCarloPrice}
           fetchHeatmapData={handleFetchHeatmapData}
         />
+        <div className="flex flex-col items-center w-full max-w-lg mx-auto p-4 mb-10">
+          <button
+            onClick={handleReset}
+            className="bg-red-500 text-white p-2 rounded-lg w-full max-w-lg mt-4"
+          >
+            Reset All
+          </button>
+        </div>
 
         <OptionResults
           price={price}
