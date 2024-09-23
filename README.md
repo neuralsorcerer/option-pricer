@@ -88,3 +88,7 @@ The backend provides the following API endpoints:
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## NOTE
+
+This code is only for development environment. For production you need to configure appropriate adjustments.
